@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Пятая чашка — чайная</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Philosopher:wght@400;700&family=Golos+Text:wght@400;500;600&display=swap">
+<style>
+:root{--bg:#dfe9e1;--ink:#12302c;--mute:#4d6661;--card:#eef4ef;--acc:#5a2a4a;--accfg:#f4ecf1;--line:#12302c33;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f2421;--ink:#dcebe3;--mute:#93aca5;--card:#16312d;--acc:#d9a7c8;--accfg:#2a1124;--line:#dcebe33a;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0f2421;--ink:#dcebe3;--mute:#93aca5;--card:#16312d;--acc:#d9a7c8;--accfg:#2a1124;--line:#dcebe33a;color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.6 "Golos Text",system-ui,sans-serif}
+.wrap{max-width:920px;margin:0 auto;padding:28px 22px 60px}
+nav{display:flex;justify-content:space-between;align-items:center;font-weight:500}
+nav a{color:var(--ink);text-decoration:none;margin-left:20px}
+nav a:focus-visible,button:focus-visible{outline:3px solid var(--acc);outline-offset:3px}
+h1,h2{font-family:Philosopher,Georgia,serif;font-weight:700;line-height:1.05;margin:0}
+h1{font-size:clamp(3rem,13vw,8.5rem);margin:12vh 0 24px;letter-spacing:-.02em}
+.lead{max-width:34ch;font-size:1.25rem;color:var(--mute);margin:0}
+h2{font-size:clamp(1.8rem,5vw,2.6rem);margin:90px 0 24px}
+.tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px}
+.tabs button{font:inherit;font-weight:500;padding:10px 18px;border-radius:99px;border:1.5px solid var(--line);background:transparent;color:var(--ink);cursor:pointer}
+.tabs button[aria-pressed="true"]{background:var(--acc);color:var(--accfg);border-color:var(--acc)}
+.panel{display:grid;grid-template-columns:1fr 240px;gap:32px;align-items:center;background:var(--card);border-radius:28px;padding:32px}
+.panel h3{font-family:Philosopher,serif;font-size:2rem;margin:0 0 6px}
+.panel p{margin:0 0 12px;color:var(--mute);max-width:42ch}
+.facts{display:flex;gap:22px;flex-wrap:wrap;font-weight:500;margin-top:14px}
+.timer{text-align:center}
+.ring{position:relative;width:200px;height:200px;margin:0 auto 14px}
+.ring svg{transform:rotate(-90deg)}
+.ring circle{fill:none;stroke-width:9}
+.ring .t{stroke:var(--line)}
+.ring .p{stroke:var(--acc);stroke-linecap:round;transition:stroke-dashoffset 1s linear}
+.ring span{position:absolute;inset:0;display:grid;place-items:center;font:700 2.4rem Philosopher,serif}
+.go{font:inherit;font-weight:600;padding:12px 26px;border:0;border-radius:99px;background:var(--acc);color:var(--accfg);cursor:pointer}
+.menu{list-style:none;margin:0;padding:0}
+.menu li{display:flex;justify-content:space-between;gap:16px;padding:16px 0;border-bottom:1px solid var(--line)}
+.menu b{font-weight:600}.menu small{display:block;color:var(--mute)}
+.hours{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:24px}
+footer{margin-top:90px;color:var(--mute);font-size:.95rem}
+@media (max-width:680px){.panel{grid-template-columns:1fr;padding:24px}}
+@media (prefers-reduced-motion:reduce){.ring .p{transition:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<nav><strong>Пятая чашка</strong><div><a href="#brew">Заварить</a><a href="#menu">Меню</a><a href="#visit">Часы</a></div></nav>
+<h1>Чай не терпит спешки.</h1>
+<p class="lead">Маленькая чайная на одиннадцать столов. Мы заваривает чай при вас и засекаем время до секунды.</p>
+
+<h2 id="brew">Заварите сами</h2>
+<div class="tabs" id="tabs" role="group" aria-label="Сорт чая"></div>
+<div class="panel">
+  <div><h3 id="name"></h3><p id="desc"></p>
+    <div class="facts"><span id="temp"></span><span id="gr"></span><span id="st"></span></div></div>
+  <div class="timer">
+    <div class="ring"><svg width="200" height="200" viewBox="0 0 200 200"><circle class="t" cx="100" cy="100" r="90"/><circle class="p" id="arc" cx="100" cy="100" r="90"/></svg><span id="clock">0:00</span></div>
+    <button class="go" id="go">Запустить таймер</button>
+  </div>
+</div>
+
+<h2 id="menu">Меню</h2>
+<ul class="menu">
+<li><div><b>Те Гуань Инь</b><small>Тёмный улун, жареные орехи и орхидея</small></div><span>220 с</span></li>
+<li><div><b>Сенча Асамуши</b><small>Японский зелёный, свежая трава и дымка</small></div><span>180 с</span></li>
+<li><div><b>Шу Пуэр, 2016</b><small>Земля, сухофрукты, мягкая сладость</small></div><span>260 с</span></li>
+<li><div><b>Рисовое печенье</b><small>К любому чаю, печём утром</small></div><span>90 с</span></li>
+</ul>
+
+<h2 id="visit">Часы работы</h2>
+<div class="hours">
+<div><b>Будни</b><br>9:00–21:00</div>
+<div><b>Выходные</b><br>11:00–23:00</div>
+<div><b>Дегустации</b><br>Каждая пятница, 19:00. Места лучше занять заранее.</div>
+</div>
+<footer>Пятая чашка. Первая — для вкуса, вторая — для беседы, пятая — для себя.</footer>
+</div>
+<script>
+const teas=[
+{n:"Сенча",t:"80 °C",g:"5 г на 250 мл",s:60,d:"Японский зелёный чай. Свежий, чуть морской, с травяной сладостью."},
+{n:"Те Гуань Инь",t:"95 °C",g:"6 г на 250 мл",s:45,d:"Улун с цветочным ароматом. Хорош на пяти-шести проливах."},
+{n:"Шу Пуэр",t:"100 °C",g:"5 г на 250 мл",s:30,d:"Выдержанный тёмный чай. Плотный, мягкий, согревающий."},
+{n:"Белый пион",t:"85 °C",g:"4 г на 250 мл",s:90,d:"Нежный белый чай. Мёд, сено и лёгкая фруктовость."}];
+const $=id=>document.getElementById(id),C=2*Math.PI*90,arc=$("arc");
+arc.style.strokeDasharray=C;
+let cur=0,left=0,total=0,iv=null;
+const fmt=s=>Math.floor(s/60)+":"+String(s%60).padStart(2,"0");
+function draw(){$("clock").textContent=fmt(left);arc.style.strokeDashoffset=C*(1-(total?left/total:0))}
+function stop(){clearInterval(iv);iv=null;$("go").textContent="Запустить таймер"}
+function pick(i){cur=i;stop();const x=teas[i];
+$("name").textContent=x.n;$("desc").textContent=x.d;$("temp").textContent=x.t;$("gr").textContent=x.g;$("st").textContent="Первый пролив: "+fmt(x.s);
+total=left=x.s;draw();
+[...$("tabs").children].forEach((b,j)=>b.setAttribute("aria-pressed",j===i))}
+teas.forEach((x,i)=>{const b=document.createElement("button");b.textContent=x.n;b.onclick=()=>pick(i);$("tabs").appendChild(b)});
+$("go").onclick=()=>{
+if(iv){stop();left=total;draw();return}
+if(left<=0)left=total;
+$("go").textContent="Сбросить";
+iv=setInterval(()=>{left--;draw();if(left<=0){stop();$("clock").textContent="Готово";$("go").textContent="Заварить снова"}},1000)};
+pick(0);
+</script>
+</body>
+</html>
